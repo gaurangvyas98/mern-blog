@@ -11,6 +11,8 @@ const PORT = process.env.PORT || 8080; // Step 1
 const routes = require('./routes/api');
 const userRouter = require("./routes/user")
 
+const __dirname = path.resolve()
+
 // Step 2
 mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
@@ -46,7 +48,14 @@ app.use((err, req, res, next) => {
       statusCode,
       message,
     });
-  });
+});
+
+//in create-react-app build folder is created while in vite dist folder is created
+app.use(express.static(path.join(__dirname, '/client/dist')))
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
+})
 
 // gggvvvgggvvv1998
 
